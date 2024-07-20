@@ -72,7 +72,7 @@ def detect_lines(image_bytes, angle_tolerance=10, eps=5, min_samples=2):
         return None, 0, 0, 0
 
 def main():
-    st.title("Thread Detection App")
+    st.title("FabricSense App")
 
     # File uploader
     uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
@@ -103,19 +103,19 @@ def main():
         st.subheader("Report")
         st.write(f"Tester: {st.session_state.tester_name}")
         st.write(f"Date: {st.session_state.test_date}")
-        st.write(f"Vertical Threads: {st.session_state.vertical_count}")
-        st.write(f"Horizontal Threads: {st.session_state.horizontal_count}")
+        st.write(f"Warps: {st.session_state.vertical_count}")
+        st.write(f"Wefts: {st.session_state.horizontal_count}")
         st.write(f"Total Threads: {st.session_state.total_count}")
 
         # Save report to file
         report_text = (
             f"Tester: {st.session_state.tester_name}\n"
             f"Date: {st.session_state.test_date}\n"
-            f"Vertical Threads: {st.session_state.vertical_count}\n"
-            f"Horizontal Threads: {st.session_state.horizontal_count}\n"
+            f"Warps: {st.session_state.vertical_count}\n"
+            f"Wefts: {st.session_state.horizontal_count}\n"
             f"Total Threads: {st.session_state.total_count}\n"
         )
-        st.download_button(label="Download Report", data=report_text, file_name="report.txt")
+        st.download_button(label="Download Report", data=report_text, file_name="report.pdf")
 
 if __name__ == "__main__":
     main()
