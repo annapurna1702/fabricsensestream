@@ -2,5 +2,6 @@ streamlit
 opencv-python-headless
 numpy<2
 matplotlib
+fpdf
 scikit-learn
 Pillow
