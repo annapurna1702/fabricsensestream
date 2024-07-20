@@ -1,9 +1,9 @@
 import streamlit as st
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.cluster import DBSCAN
-from fpdf import FPDF
-import io
+from io import BytesIO
 
 def detect_lines(image_bytes, angle_tolerance=10, eps=5, min_samples=2):
     try:
@@ -62,7 +62,7 @@ def detect_lines(image_bytes, angle_tolerance=10, eps=5, min_samples=2):
                 y1 = int(y0 + 1000 * (a))
                 x2 = int(x0 - 1000 * (-b))
                 y2 = int(y0 - 1000 * (a))
-                cv2.line(color_image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+                #cv2.line(color_image, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
         _, img_encoded = cv2.imencode('.png', color_image)
         return img_encoded.tobytes(), verticount, horicount, total_count
@@ -70,26 +70,6 @@ def detect_lines(image_bytes, angle_tolerance=10, eps=5, min_samples=2):
     except Exception as e:
         st.error(f"Error processing image: {e}")
         return None, 0, 0, 0
-
-def create_pdf_report(tester_name, test_date, vertical_count, horizontal_count, total_count):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    
-    pdf.cell(200, 10, txt="Thread Count Detection Report", ln=True, align='C')
-    pdf.ln(10)
-    pdf.cell(200, 10, txt=f"Tester: {tester_name}", ln=True)
-    pdf.cell(200, 10, txt=f"Date: {test_date}", ln=True)
-    pdf.cell(200, 10, txt=f"Warps: {vertical_count}", ln=True)
-    pdf.cell(200, 10, txt=f"Wefts: {horizontal_count}", ln=True)
-    pdf.cell(200, 10, txt=f"Total Threads: {total_count}", ln=True)
-
-    
-    pdf_output = io.BytesIO()
-    pdf.output(pdf_output)
-    pdf_output.seek(0)
-
-    return pdf_output
 
 def main():
     st.title("FabricSense App")
@@ -123,19 +103,19 @@ def main():
         st.subheader("Report")
         st.write(f"Tester: {st.session_state.tester_name}")
         st.write(f"Date: {st.session_state.test_date}")
-        st.write(f"Vertical Threads: {st.session_state.vertical_count}")
-        st.write(f"Horizontal Threads: {st.session_state.horizontal_count}")
+        st.write(f"Warps: {st.session_state.vertical_count}")
+        st.write(f"Wefts: {st.session_state.horizontal_count}")
         st.write(f"Total Threads: {st.session_state.total_count}")
 
         
-        pdf = create_pdf_report(
-            st.session_state.tester_name, 
-            st.session_state.test_date, 
-            st.session_state.vertical_count, 
-            st.session_state.horizontal_count, 
-            st.session_state.total_count
+        report_text = (
+            f"Tester: {st.session_state.tester_name}\n"
+            f"Date: {st.session_state.test_date}\n"
+            f"Wefts: {st.session_state.vertical_count}\n"
+            f"Warps: {st.session_state.horizontal_count}\n"
+            f"Total Threads: {st.session_state.total_count}\n"
         )
-        st.download_button(label="Download Report as PDF", data=pdf, file_name="report.pdf", mime="application/pdf")
+        st.download_button(label="Download Report", data=report_text, file_name="report.txt")
 
 if __name__ == "__main__":
     main()
