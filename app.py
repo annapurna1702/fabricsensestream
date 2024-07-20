@@ -72,6 +72,8 @@ def detect_lines(image_bytes, angle_tolerance=10, eps=5, min_samples=2):
         return None, 0, 0, 0
 
 def main():
+    with open("style.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     st.title("FabricSense App")
 
     
