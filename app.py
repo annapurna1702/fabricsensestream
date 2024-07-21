@@ -90,10 +90,12 @@ def main():
 
             
             st.subheader("Enter Tester Information")
+            material_no = st.text_input("Enter material number")
             tester_name = st.text_input("Enter tester name")
             test_date = st.text_input("Enter date")
 
             if st.button("Submit Info"):
+                st.session_state.material_no = material_no
                 st.session_state.tester_name = tester_name
                 st.session_state.test_date = test_date
                 st.session_state.vertical_count = vertical_count
@@ -103,6 +105,7 @@ def main():
 
     if 'tester_name' in st.session_state and 'test_date' in st.session_state:
         st.subheader("Report")
+        st.write(f"Material Number: {st.session_state.material_no}")
         st.write(f"Tester: {st.session_state.tester_name}")
         st.write(f"Date: {st.session_state.test_date}")
         st.write(f"Warps: {st.session_state.vertical_count}")
