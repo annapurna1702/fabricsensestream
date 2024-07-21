@@ -114,6 +114,7 @@ def main():
 
         
         report_text = (
+            f"Material Number: {st.session_state.material_no}\n"
             f"Tester: {st.session_state.tester_name}\n"
             f"Date: {st.session_state.test_date}\n"
             f"Wefts: {st.session_state.vertical_count}\n"
